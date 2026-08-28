@@ -5,7 +5,7 @@
 
 Name:           asterisk-sounds-extra
 Version:        1.5.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Extra sounds for Asterisk
 
 # Automatically converted from old format: CC-BY-SA - review is highly recommended.
@@ -327,8 +327,9 @@ mkdir fr
 
 for file in %{S:10} %{S:11} %{S:12} %{S:13} %{S:14} %{S:15} %{S:16} %{S:17} %{S:18}
 do
-  tar --list --file $file | grep -E '.(alaw|g722|g729|gsm|siren7|siren14|sln16|ulaw|wav)$' | sed -e 's!^!%{sounds_dir}/fr/!' > `basename $file .tar.gz`.list
   tar --extract --directory ./fr/  --file $file
+  find ./fr/ -type f -name "astcc-followed-by-the-pound-key.*" -delete
+  find ./fr/ -printf '%%P\n' | grep -E '.(alaw|g722|g729|gsm|siren7|siren14|sln16|ulaw|wav)$' | sed -e 's!^!%{sounds_dir}/fr/!' > `basename $file .tar.gz`.list
 done
 
 iconv -f iso-8859-1 -t utf-8 < fr/extra-sounds-fr.txt > fr/extra-sounds-fr.txt.tmp
@@ -458,6 +459,9 @@ done
 %doc asterisk-extra-sounds-en_GB-wav-%{en_GB_version}.list
 
 %changelog
+* Fri Aug 28 2026 Luis Leal <Luis Leal> - 1.5.2-2
+- Fix core/extra duplications
+
 * Fri Dec 27 2024 Luis Leal <Luis Leal> - 1.5.2-1
 - Initial extra sounds packages
 

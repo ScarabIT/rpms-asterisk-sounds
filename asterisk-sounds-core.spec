@@ -11,7 +11,7 @@
 
 Name:           asterisk-sounds-core
 Version:        1.6.1
-Release:        19%{?dist}
+Release:        20%{?dist}
 Summary:        Core sounds for Asterisk
 
 
@@ -966,8 +966,9 @@ mkdir en_GB
 
 for file in %{S:60} %{S:61} %{S:62} %{S:63} %{S:64} %{S:65} %{S:66} %{S:67} %{S:68}
 do
-  tar --list --file $file | grep -E '.(alaw|g722|g729|gsm|siren7|siren14|sln16|ulaw|wav)$' | sed -e 's!^!%{sounds_dir}/en_GB/!' > `basename $file .tar.gz`.list
   tar --extract --directory ./en_GB/  --file $file
+  find ./en_GB/ -type f -name "astcc-followed-by-the-pound-key.*" -exec rename 'astcc-followed-by-the-pound-key' 'astcc-followed-by-pound' {} +  
+  find ./en_GB/ -printf '%%P\n' | grep -E '.(alaw|g722|g729|gsm|siren7|siren14|sln16|ulaw|wav)$' | sed -e 's!^!%{sounds_dir}/en_GB/!' > `basename $file .tar.gz`.list  
 done
 
 mkdir ja
@@ -1346,6 +1347,9 @@ done
 %doc asterisk-core-sounds-sv-wav-%{sv_version}.list
 
 %changelog
+* Fri Aug 28 2026 Luis Leal <Luis Leal> - 1.6.1-20
+- Fix core/extra duplications
+
 * Wed Aug 28 2024 Miroslav Suchý <msuchy@redhat.com> - 1.6.1-18
 - convert license to SPDX
 
