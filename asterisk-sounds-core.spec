@@ -930,7 +930,7 @@ mkdir fr
 
 for file in %{S:20} %{S:21} %{S:22} %{S:23} %{S:24} %{S:25} %{S:26} %{S:27} %{S:28}
 do
-  tar --list --file $file | grep -E '.(alaw|g722|g729|gsm|siren7|siren14|sln16|ulaw|wav)$' | sed -e 's!^!%{sounds_dir}/fr/!' > `basename $file .tar.gz`.list
+  tar --list --file $file | grep -E '.(alaw|g722|g729|gsm|siren7|siren14|sln16|ulaw|wav)$' | sed -e '/astcc-followed-by-the-pound-key/d' | sed -e 's!^!%{sounds_dir}/fr/!' > `basename $file .tar.gz`.list
   tar --extract --directory ./fr/  --file $file
 done
 
@@ -966,9 +966,8 @@ mkdir en_GB
 
 for file in %{S:60} %{S:61} %{S:62} %{S:63} %{S:64} %{S:65} %{S:66} %{S:67} %{S:68}
 do
+  tar --list --file $file | grep -E '.(alaw|g722|g729|gsm|siren7|siren14|sln16|ulaw|wav)$' | sed -e '/astcc-followed-by-the-pound-key/d' | sed -e 's!^!%{sounds_dir}/en_GB/!' > `basename $file .tar.gz`.list
   tar --extract --directory ./en_GB/  --file $file
-  find ./en_GB/ -type f -name "astcc-followed-by-the-pound-key.*" -exec rename 'astcc-followed-by-the-pound-key' 'astcc-followed-by-pound' {} +  
-  find ./en_GB/ -printf '%%P\n' | grep -E '.(alaw|g722|g729|gsm|siren7|siren14|sln16|ulaw|wav)$' | sed -e 's!^!%{sounds_dir}/en_GB/!' > `basename $file .tar.gz`.list  
 done
 
 mkdir ja
